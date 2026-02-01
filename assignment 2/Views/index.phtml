@@ -1,0 +1,154 @@
+<?php require('template/header.phtml') ?> <!-- Load header and navigation -->
+
+<!-- Main container  -->
+<div class="container-fluid px-5 mx-auto" style="max-width: 1800px;">
+
+    <!-- If search, show the reset and current search term -->
+    <?php if ($showReset): ?>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Showing results for: <strong><?= htmlspecialchars($searchTerm) ?></strong></h5>
+            <a href="/index.php" class="btn btn-outline-secondary">Reset Search</a>
+        </div>
+    <?php endif; ?>
+
+    <!-- Live Search Bar -->
+    <h3>Search</h3>
+    <div class="position-relative mb-3" style="z-index: 999;">
+        <input type="text" id="xmlSearch" class="form-control" placeholder="Search facilities...">
+        <ul id="searchSuggestions" class="list-group position-absolute w-100 d-none"></ul> <!-- Suggestions dropdown -->
+    </div>
+
+    <!-- Dynamic search results rendered here -->
+    <div class="row" id="xmlOutput"></div>
+
+    <!-- Scripts: Live Search (XML), Delete Handler, Status Updater-->
+    <script src="/JavaScripts/xmlsearch.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new SearchSuggestion("xmlSearch", "searchSuggestions", "xmlOutput", "searchController.php");
+        });
+    </script>
+
+    <script src="/JavaScripts/deleteFacility.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            new DeleteFacility("delete-btn", "deleteFacility.php", () => {
+                if (typeof loadFacilityTable === "function") loadFacilityTable();
+                if (typeof loadMapMarkers === "function") loadMapMarkers();
+            });
+        });
+    </script>
+
+    <script src="/JavaScripts/updateStatus.js"></script>
+
+    <!-- Leaflet Map Display -->
+    <h3>ecoFacility Map View</h3>
+    <div id="ecoMap" style="height: 500px;"></div>
+    <script src="/JavaScripts/mapManager.js"></script>
+
+    <!-- Load Leaflet.js CSS & JS for map support -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Welcome message and debug information -->
+    <h2>Welcome to ecoBuddy </h2>
+    <div class="row">
+        <div class="col-5">
+            <p><?php echo $view->dbMessage; ?></p>
+        </div>
+        <div class="col-7">
+            <p>Current script <?php echo $_SERVER["PHP_SELF"]; ?></p>
+        </div>
+    </div>
+
+    <!-- Facility Table Display -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>House Number</th>
+                <th>Street Name</th>
+                <th>County</th>
+                <th>Town</th>
+                <th>Post Code</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Contributor</th>
+                <th>Status</th>
+                <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'Manager'): ?>
+                    <th>Update Status</th>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'Manager'): ?>
+                    <th class="text-center" style="width: 90px;">Delete</th>
+                <?php endif; ?>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!-- Loop through facility records and display each one -->
+            <?php foreach ($facilities as $FacilityData): ?>
+                <tr class="map-focus-row" data-id="<?= $FacilityData['id'] ?>">
+                    <td><?= htmlspecialchars($FacilityData['title']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['category']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['description']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['houseNumber']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['streetName']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['county']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['town']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['postcode']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['lng']) ?></td>
+                    <td><?= htmlspecialchars($FacilityData['lat']) ?></td>
+                    <td><?= htmlspecialchars($userMap[$FacilityData['contributor']] ?? 'Unknown') ?></td>
+                    <td><?= htmlspecialchars($statusMap[$FacilityData['status']] ?? 'Unknown') ?></td>
+                    <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'Manager'): ?>
+                        <!-- Edit button only for Manager users -->
+                        <td class="text-center">
+                            <select class="form-select form-select-sm status-dropdown" data-id="<?= $FacilityData['id'] ?>">
+                                <?php foreach ($statusMap as $sid => $label): ?>
+                                    <option value="<?= $sid ?>" <?= $sid == $FacilityData['status'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($label) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button class="btn btn-sm btn-success mt-1 update-status-btn" data-id="<?= $FacilityData['id'] ?>">
+                                Update
+                            </button>
+                        </td>
+                    <?php endif; ?>
+                    <!-- Delete button only for Manager users -->
+                    <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'Manager'): ?>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="<?= $FacilityData['id'] ?>">
+                                Delete
+                            </button>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Bar -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <?php if ($page > 1): ?>
+                <li class="page-item"><a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a></li>
+            <?php endif; ?>
+            <?php for ($p = 1; $p <= $totalPages; $p++): ?>
+                <li class="page-item <?= $p == $page ? 'active' : '' ?>">
+                    <a class="page-link" href="?page=<?= $p ?>"><?= $p ?></a>
+                </li>
+            <?php endfor; ?>
+            <?php if ($page < $totalPages): ?>
+                <li class="page-item"><a class="page-link" href="?page=<?= $page + 1 ?>">Next</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+
+    <!-- Load footer -->
+    <?php require('template/footer.phtml') ?>
+</div>

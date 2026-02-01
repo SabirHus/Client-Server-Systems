@@ -1,0 +1,235 @@
+/* =============================
+   GLOBAL LAYOUT & BODY
+   ============================= */
+body {
+    background-color: #f4f7fa; /* Light background for the whole site */
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding-top: 70px; /* Offsets content for fixed headers */
+}
+
+.container {
+    max-width: 1800px;
+    margin: auto;
+    padding: 2rem;
+}
+
+.container-fluid {
+    padding: 2rem;
+}
+
+
+/* =============================
+   NAVBAR & HEADER STYLING
+   ============================= */
+header, .navbar {
+    background-color: #0d6efd; /* Bootstrap primary blue */
+    color: white;
+    padding: 0.25rem 1rem;
+    margin-bottom: 1.5rem;
+    min-height: 50px;
+}
+
+.navbar a,
+.navbar-brand {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #f4f7fa;
+}
+
+
+/* =============================
+   CARDS - USED FOR SEARCH RESULTS
+   ============================= */
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.1);
+}
+
+
+/* =============================
+   TABLE STYLING - TEAL THEME
+   ============================= */
+.table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table thead {
+    background-color: #006d77; /* Teal header */
+    color: #ffffff;
+}
+
+.table thead th {
+    padding: 0.75rem;
+    font-weight: 600;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table tbody td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #e3e8ea;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #e0f7f1;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #c0ebdf;
+    cursor: pointer;
+}
+
+.table tbody td:first-child {
+    font-weight: 500;
+    color: #00524f;
+}
+
+.table thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.table thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.table-responsive {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* =============================
+   BUTTONS
+   ============================= */
+.btn {
+    border-radius: 30px;
+    font-weight: 500;
+}
+
+.btn-outline-success:hover {
+    background-color: #198754;
+    color: white;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+
+/* =============================
+   ALERT MESSAGES
+   ============================= */
+.alert {
+    margin-top: 1rem;
+}
+
+
+/* =============================
+   LOGIN FORM
+   ============================= */
+form.d-flex.gap-2 input {
+    min-width: 160px;
+}
+
+
+/* =============================
+   TYPOGRAPHY
+   ============================= */
+h1, h2, h3, a {
+    color: #003366;
+}
+
+
+/* =============================
+   MAP DISPLAY (LEAFLET)
+   ============================= */
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 2rem;
+}
+
+
+/* =============================
+   HOVERABLE TABLE ROWS (LINK-LIKE)
+   ============================= */
+.map-focus-row {
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.map-focus-row:hover {
+    background-color: #f0f8ff; /* Light blue background */
+    color: #0d6efd;            /* Bootstrap blue text */
+    text-decoration: underline;
+}
+
+
+/* =============================
+   SEARCH SUGGESTION DROPDOWN
+   ============================= */
+#searchSuggestions {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+
+#searchSuggestions li a {
+    padding: 10px 15px;
+    color: #333;
+}
+
+#searchSuggestions li a:hover {
+    background-color: #f1f1f1;
+    color: #0d6efd;
+}
+
+/* =============================
+   Status Update DROPDOWN
+   ============================= */
+
+.status-dropdown {
+    width: 100%;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.update-status-btn {
+    width: 100%;
+    padding: 0.3rem;
+    font-size: 0.75rem;
+    background-color: #0dcaf0;
+    border: none;
+    color: white;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s;
+}
+
+.update-status-btn:hover {
+    background-color: #0bb5d4;
+}

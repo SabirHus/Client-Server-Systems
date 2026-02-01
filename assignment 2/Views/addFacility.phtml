@@ -1,0 +1,106 @@
+<?php require_once('template/header.phtml'); ?> <!-- Includes the main site header and nav -->
+
+<!-- Page Container -->
+<div class="container mt-4">
+    <h2>Add New Facility</h2> <!-- Page Heading -->
+
+    <!-- Facility Submission Form -->
+    <form id="addFacilityForm" class="col-lg-8">
+
+        <!-- Title Input -->
+        <div>
+            <label for="title" class="form-label">Title</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+
+        <!-- Category Dropdown  -->
+        <div>
+            <label for="category" class="form-label">Category</label>
+            <select name="category" class="form-select" required>
+                <option disabled selected>-- Select Category --</option>
+                <?php foreach ($view->categories as $cat): ?>
+                    <option value="<?= htmlspecialchars($cat['id']) ?>">
+                        <?= htmlspecialchars($cat['name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <!-- Description Input -->
+        <div>
+            <label for="description" class="form-label">Description</label>
+            <input type="text" id="description" name="description" class="form-control" required>
+        </div>
+
+        <!-- House Number -->
+        <div>
+            <label for="houseNumber" class="form-label">House Number</label>
+            <input type="number" id="houseNumber" name="houseNumber" class="form-control" required>
+        </div>
+
+        <!-- Street Name -->
+        <div>
+            <label for="streetName" class="form-label">Street Name</label>
+            <input type="text" id="streetName" name="streetName" class="form-control" required>
+        </div>
+
+        <!-- County Input (letters only) -->
+        <div>
+            <label for="county" class="form-label">County</label>
+            <input name="county" type="text" pattern="[A-Za-z\s]+" title="Letters and spaces only" class="form-control" required>
+        </div>
+
+        <!-- Town Input (letters only) -->
+        <div>
+            <label for="town" class="form-label">Town</label>
+            <input name="town" type="text" pattern="[A-Za-z\s]+" title="Letters and spaces only" class="form-control" required>
+        </div>
+
+        <!-- Postcode Input  -->
+        <div>
+            <label for="postcode" class="form-label">Postcode</label>
+            <input name="postcode" type="text" id="postcode" class="form-control" required>
+        </div>
+
+        <!-- Longitude Input -->
+        <div>
+            <label for="lng" class="form-label">Longitude</label>
+            <input name="lng" type="number" id="lng" class="form-control" step="0.000001" min="-180" max="180" required>
+        </div>
+
+        <!-- Latitude Input -->
+        <div>
+            <label for="lat" class="form-label">Latitude</label>
+            <input name="lat" type="number" id="lat" class="form-control" step="0.000001" min="-90" max="90" required>
+        </div>
+
+        <!-- Status Dropdown -->
+        <div>
+            <label for="status" class="form-label">Status</label>
+            <select name="status" class="form-select" required>
+                <option disabled selected value="">-- Select Status --</option>
+                <?php foreach ($view->statuses as $status): ?>
+                    <option value="<?= htmlspecialchars($status['id']) ?>">
+                        <?= htmlspecialchars($status['statusComment']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary mt-3">Add Facility</button>
+
+        <!-- Area to show success/failure message -->
+        <div id="addFacilityMsg" class="mt-3"></div>
+
+        <!-- Submit Script -->
+        <script src="../JavaScripts/submitFacility.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                new FormHandler("addFacilityForm", "addFacility.php", "addFacilityMsg");
+            });
+        </script>
+    </form>
+</div>
+
+<?php require_once('template/footer.phtml'); ?> <!-- Include footer template -->
