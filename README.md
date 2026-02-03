@@ -12,7 +12,7 @@ ecoBuddy is a full stack web-based application which is aimed at mapping and man
 * Responsive Design: It is created using Bootstrap 5 to make it compatible with both desktop and mobile gadgets.
 
 ## Technical Stack
-* **Backend:** PHP (OOP/MVC Pattern).
+* Backend: PHP (OOP/MVC Pattern).
 * Frontend: JavaScript (ES6 Classes), HTML5 and CSS3, Bootstrap 5.
 * Database: SQLite (relational structure).
 * API/Data Formats: JSON/markers on map and XML/search results.
